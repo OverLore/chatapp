@@ -1,5 +1,7 @@
 <script>
 	import { addDoc } from 'firebase/firestore';
+	import CryptoJS from 'crypto-js';
+	const secretKey = '?32Dex&Fgjj*_beTaQZ&;z_i<nCS^Fi/';
 
 	export let chatsRef;
 	export let user;
@@ -8,8 +10,12 @@
 	const appendMessage = async () => {
 		if (!message) return;
 
-		await addDoc(chatsRef, { message, uid: user.uid, date: Date.now() });
+		await addDoc(chatsRef, { message: encryptMessage(message), uid: user.uid, date: Date.now() });
 		message = '';
+	};
+
+	const encryptMessage = (msg) => {
+		return CryptoJS.AES.encrypt(msg, secretKey).toString();
 	};
 </script>
 

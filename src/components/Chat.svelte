@@ -3,12 +3,20 @@
 	import { tick } from 'svelte';
 	import AppendMessage from './AppendMessage.svelte';
 	import Username from './Username.svelte';
+	import CryptoJS from 'crypto-js';
+	const secretKey = '?32Dex&Fgjj*_beTaQZ&;z_i<nCS^Fi/';
+
 	export let user;
 
 	let chatsElement;
 	const scrollToTheEnd = async () => {
 		await tick();
 		chatsElement.scrollTo(0, chatsElement.scrollHeight);
+	};
+
+	const decryptMessage = (cipherText) => {
+		const bytes = CryptoJS.AES.decrypt(cipherText, secretKey);
+		return bytes.toString(CryptoJS.enc.Utf8);
 	};
 </script>
 
@@ -17,7 +25,7 @@
 		{#each messages.sort((a, b) => a.date - b.date) as { message, uid }}
 			<div class="notification {uid === user.uid ? 'is-info is-sender' : 'is-success is-receiver'}">
 				<Username {uid} />
-				<p>{message}</p>
+				<p>{decryptMessage(message)}</p>
 			</div>
 		{/each}
 	</div>

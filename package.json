@@ -25,6 +25,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"crypto-js": "^4.2.0",
 		"firebase": "^9.23.0",
 		"sveltefire": "^0.4.5"
 	}
